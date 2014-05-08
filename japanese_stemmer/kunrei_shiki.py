@@ -65,8 +65,8 @@ u'haa':[u'はあ',u'ハー'], u'hii':[u'ひい',u'ヒー'], u'huu':[u'ふう',u'
 u'faa':[u'はあ',u'ハー'], u'fii':[u'ひい',u'ヒー'], u'fuu':[u'ふう',u'フー'], u'fee':[u'へえ',u'ヘー'], u'foo':[u'ほお',u'ホー'], u'fyaa':[u'ひゃあ',u'ヒャー'], u'うfyuu':[u'ひゅう',u'ヒュー'], u'fyoo':[u'ひょお',u'ヒョー'], 
 u'maa':[u'まあ',u'マー'], u'mii':[u'みい',u'ミー'], u'muu':[u'むう',u'ムー'], u'mee':[u'めえ',u'メー'], u'moo':[u'もお',u'モー'], u'myaa':[u'みゃあ',u'ミャー'], u'myuu':[u'みゅう',u'ミュー'], u'myoo':[u'みょお',u'ミョー'], 
 u'yaa':[u'やあ',u'ヤー'], u'yuu':[u'ゆう',u'ユー'], u'yoo':[u'よお',u'ヨー'],  
-u'raa':[u'らあ',u'ラー'], u'rii':[u'りい', u'リー'], u'ruu':[u'るう',u'ルー'], u'ree':[u'れえ',u'レー'], u'roo':[u'ろ',u'ロー'], u'ryaa':[u'りゃ',u'リャー'], u'ryuu':[u'りゅ',u'リュー'], u'ryoo':[u'りょ',u'リョー'], 
-u'laa':[u'らあ',u'ラー'], u'lii':[u'りい', u'リー'], u'luu':[u'るう',u'ルー'], u'lee':[u'れえ',u'レー'], u'loo':[u'ろ',u'ロー'], u'lyaa':[u'りゃ',u'リャー'], u'lyuu':[u'りゅ',u'リュー'], u'lyoo':[u'りょ',u'リョー'], 
+u'raa':[u'らあ',u'ラー'], u'rii':[u'りい', u'リー'], u'ruu':[u'るう',u'ルー'], u'ree':[u'れえ',u'レー'], u'roo':[u'ろお',u'ロー'], u'ryaa':[u'りゃあ',u'リャー'], u'ryuu':[u'りゅう',u'リュー'], u'ryoo':[u'りょお',u'リョー'], 
+u'laa':[u'らあ',u'ラー'], u'lii':[u'りい', u'リー'], u'luu':[u'るう',u'ルー'], u'lee':[u'れえ',u'レー'], u'loo':[u'ろお',u'ロー'], u'lyaa':[u'りゃあ',u'リャー'], u'lyuu':[u'りゅう',u'リュー'], u'lyoo':[u'りょお',u'リョー'], 
 u'waa':[u'わあ',u'ワー'],
 u'gaa':[u'があ',u'ガー'], u'gii':[u'ぎい',u'ギー'], u'guu':[u'ぐう',u'グー'], u'gee':[u'げえ',u'ゲー'], u'goo':[u'ごお',u'ゴー'], u'gyaa':[u'ぎゃあ', u'ギャー'], u'gyuu':[u'ぎゅう',u'ギュー'] ,u'gyoo':[u'ぎょお',u'ギョー'], 
 u'zaa':[u'ざあ',u'ザー'], u'zii':[u'じい',u'ジー'], u'zuu':[u'ずう',u'ズー'], u'zee':[u'ぜえ',u'ゼー'], u'zoo':[u'ぞお',u'ゾー'], u'zyaa':[u'じゃあ', u'ジャー'], u'zyuu':[u'じゅう',u'ジュー'] ,u'zyoo':[u'じょお',u'ジョー'], 
@@ -94,6 +94,7 @@ u'd':[u'だ',u'ダ'],
 u'f':[u'ふ',u'フ'],
 u'g':[u'ぐ',u'グ'],
 u'h':[u'ふ',u'フ'],
+u'hn':[u'ん',u'ン'],
 u'j':[u'る',u'ル'],
 u'k':[u'く',u'ク'],
 u'l':[u'る',u'ル'],
@@ -109,6 +110,14 @@ u'w':[u'わ',u'ワ'],
 u'x':[u'ず',u'ズ'],
 u'y':[u'ゆ',u'ユ'],  
 u'z':[u'ず',u'ズ'],
+
+#simple punctuation handling?
+u'a\'' :[u'ああ',u'アー'], u'i\'':[u'いい', u'イー'],u'u\'':[u'うう',u'ウー'], u'e\'':[u'ええ',u'エー'], u'o\'':[u'おお',u'オー'],
+u'\'' :[u'',u''],
+
+#TODO: match dipthongs? Better estimates for American english pronunciation?
+
+
 }
 
 def romaji2hiragana(phrase):
@@ -119,6 +128,7 @@ def romaji2hiragana(phrase):
   hiragana = u''
   while phrase:
     (h,p) = nibble(phrase)
+    #print 'returned phrase is ' + h[0]
     hiragana += h[0]
     phrase = p
   return hiragana
@@ -142,11 +152,12 @@ def nibble(phrase):
   #longest possible key->kana is 4 characters, so search next four then three etc for key hit
   for i in reversed(range(4)):
     nib = phrase[:i]
-    print 'nib: '+ nib
+    #print 'nib: '+ nib
     if nib in TRANSLITERATION_TABLE:
-      print 'trans: ' + TRANSLITERATION_TABLE[nib][1]
+      #print 'trans: ' + TRANSLITERATION_TABLE[nib][1]
       return (TRANSLITERATION_TABLE[nib], phrase[i:])
-  return (phrase, u'')
+  print 'match not found. returning phrase ' + phrase[:1] + ' ' + phrase[1:]
+  return ([phrase[:1], phrase[:1]], phrase[1:])
   
 
 
@@ -156,8 +167,8 @@ def main():
   args = parser.parse_args()
 
   for word in args.words:
-    result = romaji2hiragana(word)
-    print result
+    print(romaji2hiragana(word))
+    print(romaji2katakana(word))
         
 
 if __name__ == "__main__":
