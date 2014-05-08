@@ -26,8 +26,27 @@ HEPBURN_FILTER = [
   [r'tsu' , 'tu'],
   [r'fu' , 'hu'],
   [r'sh' , 'si'],
-  [r's[^aeiou]+' , 'su'],
-  [r'c' , 'k'],#remaining 'c' values can be safely interpreted as 'k'
+  [r'b(?P<remainder>[^aeiou]|$)' , 'bu\g<remainder>'],
+  [r'c(?P<remainder>[^aeiou]|$)' , 'ku\g<remainder>'],
+  [r'd(?P<remainder>[^aeiouy]|$)' , 'du\g<remainder>'],
+  [r'f(?P<remainder>[^aeiou]|$)' , 'hu\g<remainder>'],
+  [r'g(?P<remainder>[^aeiouy]|$)' , 'gu\g<remainder>'],
+  [r'h(?P<remainder>[^aeiouy]|$)' , 'hu\g<remainder>'],
+  [r'j(?P<remainder>[^aeiou]|$)' , 'jo\g<remainder>'],
+  [r'k(?P<remainder>[^aeiouy]|$)' , 'ku\g<remainder>'],
+  [r'l(?P<remainder>[^aeiouy]|$)' , 'ru\g<remainder>'],
+  [r'm(?P<remainder>[^aeiouy]|$)' , 'mu\g<remainder>'],
+  #[r'n(?P<remainder>[^aeiouy]|$)' , 'nu\g<remainder>'],
+  [r'p(?P<remainder>[^aeiouy]|$)' , 'pu\g<remainder>'],
+  [r'q(?P<remainder>[^aeiouy]|$)' , 'kyu\g<remainder>'],
+  [r'r(?P<remainder>[^aeiouy]|$)' , 'ru\g<remainder>'],
+  [r's(?P<remainder>[^aeiouy]|$)' , 'su\g<remainder>'],
+  [r't(?P<remainder>[^aeiouy]|$)' , 'tu\g<remainder>'],
+  [r'v(?P<remainder>[^aeiouy]|$)' , 'vu\g<remainder>'],
+  [r'w(?P<remainder>[^aeiouy]|$)' , 'wa\g<remainder>'],
+  [r'x(?P<remainder>[^aeiouy]|$)' , 'ku\g<remainder>'],
+  #[r'y(?P<remainder>[^aeiouy]|$)' , 'yu\g<remainder>'],
+  [r'z(?P<remainder>[^aeiouy]|$)' , 'yu\g<remainder>'],
 ]
 
 
@@ -93,11 +112,13 @@ def guess_stem(word):
   #2a: we want to use kunrei-shiki input romanizations, so first remove the
   #most 'Hepburn' like n-grams
   #(namely Chi=>ti, Chyo=>tyo, Shi=>si, Shya=>sya, Cha=>tya Ji=>zi, tsu=>tu)
-  for f in HEPBURN_FILTER:
-    word = re.sub(f[0], f[1], word)
+  #for f in HEPBURN_FILTER:
+  #  word = re.sub(f[0], f[1], word)
+  #print word
 
   #2b Convert filtered word to hiragana via romkan
   hiragana = romkan.to_hiragana(word.decode('utf-8'))
+  results = [hiragana]
 
   #3: We've got a simple single word in hiragana. First test against adjectival endings
 
