@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # vim: set ts=2 expandtab:
 '''
-Module: kunrei_shiki.py
-Desc: Transliterate using kunrei-shiki romanizations
+Module: transliterate.py
+Desc: Transliterate using (modified)kunrei-shiki romanizations
 Author: john.oneil  
 Email: oneil.john@gmail.com
 DATE: Wed May 7th 2014
