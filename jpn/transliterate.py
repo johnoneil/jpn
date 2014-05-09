@@ -28,7 +28,7 @@ u'ma':[u'ま',u'マ'], u'mi':[u'み',u'ミ'], u'mu':[u'む',u'ム'], u'me':[u'�
 u'ya':[u'や',u'ヤ'], u'yu':[u'ゆ',u'ユ'], u'yo':[u'よ',u'ヨ'],  
 u'ra':[u'ら',u'ラ'], u'ri':[u'り', u'リ'], u'ru':[u'る',u'ル'], u're':[u'れ',u'レ'], u'ro':[u'ろ',u'ロ'], u'rya':[u'りゃ',u'リャ'], u'ryu':[u'りゅ',u'リュ'], u'ryo':[u'りょ',u'リョ'], 
 u'la':[u'ら',u'ラ'], u'li':[u'り', u'りリ'], u'lu':[u'る',u'ル'], u'le':[u'れ',u'レ'], u'lo':[u'ろ',u'ロ'], u'lya':[u'りゃ',u'リャ'], u'lyu':[u'りゅ',u'リュ'], u'lyo':[u'りょ',u'リョ'], 
-u'wa':[u'わ',u'ワ'], u'o':[u'を',u'ヲ'], #u'i':[u'ヰ', u'ゐ '], u'e':[u'ゑ',u'ヱ']
+u'wa':[u'わ',u'ワ'], #u'o':[u'を',u'ヲ'], #u'i':[u'ヰ', u'ゐ '], u'e':[u'ゑ',u'ヱ']
 u'n' :[u'ん',u'ン'],  
 u'ga':[u'が',u'ガ'], u'gi':[u'ぎ',u'ギ'], u'gu':[u'ぐ',u'グ'], u'ge':[u'げ',u'ゲ'], u'go':[u'ご',u'ゴ'], u'gya':[u'ぎゃ', u'ギャ'], u'gyu':[u'ぎゅ',u'ギュ'] ,u'gyo':[u'ぎょ',u'ギョ'], 
 u'za':[u'ざ',u'ザ'], u'zi':[u'じ',u'ジ'], u'zu':[u'ず',u'ズ'], u'ze':[u'ぜ',u'ゼ'], u'zo':[u'ぞ',u'ゾ'], u'zya':[u'じゃ', u'ジャ'], u'zyu':[u'じゅ',u'ジュ'] ,u'zyo':[u'じょ',u'ジョ'], 
@@ -90,7 +90,7 @@ u'wo':[u'を',u'を'],
 #Single consonants. Not strictly correct, but add robustness to general transliteration.
 u'b':[u'ぶ',u'ブ'],
 u'c':[u'く',u'ク'],
-u'd':[u'だ',u'ダ'],
+u'd':[u'ど',u'ド'],
 u'f':[u'ふ',u'フ'],
 u'g':[u'ぐ',u'グ'],
 u'h':[u'ふ',u'フ'],
@@ -116,7 +116,9 @@ u'a\'' :[u'ああ',u'アー'], u'i\'':[u'いい', u'イー'],u'u\'':[u'うう',u
 u'\'' :[u'',u''],
 
 #TODO: match dipthongs? Better estimates for American english pronunciation?
-
+#attempt to render 'th' better, without screwing up 'h'
+u'tha':[u'ざ',u'ザ'], u'thi':[u'じ',u'ジ'], u'thu':[u'ず',u'ズ'], u'the':[u'ざ',u'ザ'], u'tho':[u'ぞ',u'ゾ'], u'thya':[u'つゃ',u'ツャ'], u'thyu':[u'つゅ',u'ツュ'], u'thyo':[u'つょ',u'ツョ'], 
+u'th':[u'つ',u'ツ'],
 
 }
 
@@ -163,12 +165,15 @@ def nibble(phrase):
 
 def main():
   parser = argparse.ArgumentParser(description='Transliterate romaji to hiragana.')
+  parser.add_argument('-k', '--katakana', help='Transliterate to katakana',action='store_true')
   parser.add_argument('words', nargs='*', help='Words to transliterate')
   args = parser.parse_args()
 
   for word in args.words:
-    print(romaji2hiragana(word))
-    print(romaji2katakana(word))
+    if args.katakana:
+      print(romaji2katakana(word))
+    else:
+      print(romaji2hiragana(word))
         
 
 if __name__ == "__main__":
