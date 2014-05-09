@@ -67,6 +67,35 @@ VerbalTransforms = [
   VerbalTransform(u'くる', ur'きます$', ur'こない$', ur'きて$', ur'きた$'),
 ]
 
+class AdjectivalTransform(object):
+  def __init__(self, root, negative, past, negative_past):
+    self.root = root
+    self.negative = negative
+    self.past = past
+    self.negative_past = negative_past
+
+  def Negative(self, hiragana):
+    if re.search(self.negative, hiragana):
+      return re.sub(self.negative, self.root, hiragana)
+    else:
+      return None
+
+  def Past(self, hiragana):
+    if re.search(self.past, hiragana):
+      return re.sub(self.past, self.root, hiragana)
+    else:
+      return None 
+
+  def NegativePast(self, hiragana):
+    if re.search(self.negative_past, hiragana):
+      return re.sub(self.negative_past, self.root, hiragana)
+    else:
+      return None
+
+AdjectivalTransforms = [
+  AdjectivalTransform(u'い', ur'くない$', ur'かった$', ur'くなかった$'),
+]
+
 
 def guess_stem(word):
   """given single input word, try to discern japanese word stem
@@ -79,6 +108,13 @@ def guess_stem(word):
   results = [hiragana]
 
   #3: We've got a simple single word in hiragana. First test against adjectival endings
+  for tx in AdjectivalTransforms:
+    negative = tx.Negative(hiragana)
+    if negative: results.append(negative)
+    past = tx.Past(hiragana)
+    if past: results.append(past)
+    past = tx.Past(hiragana)
+    if past: results.append(past)
 
   #4: No hits for adjetive stem, test against verbal endings
   for tx in VerbalTransforms:
