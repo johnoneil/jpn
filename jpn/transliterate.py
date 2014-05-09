@@ -125,8 +125,8 @@ u'th':[u'つ',u'ツ'],
 def romaji2hiragana(phrase):
   '''Transliterate using kunrei-shiki
   '''
-  #TODO: ensure input is a unicode string?
-  #TODO: ensure input is entirely ascii? No we should handle mixed roman/non-roman characters
+  #ensure input is a unicode string
+  phrase = phrase.decode('utf-8')
   hiragana = u''
   while phrase:
     (h,p) = nibble(phrase)
@@ -138,12 +138,12 @@ def romaji2hiragana(phrase):
 def romaji2katakana(phrase):
   '''Transliterate using kunrei-shiki
   '''
-  #TODO: ensure input is a unicode string?
-  #TODO: ensure input is entirely ascii? No we should handle mixed roman/non-roman characters
+  #ensure input is a unicode string
+  phrase = phrase.decode('utf-8')
   katakana = u''
   while phrase:
     (h,p) = nibble(phrase)
-    katakana += h[1]
+    katakana += unicode(h[1])
     phrase = p
   return katakana
 
@@ -158,7 +158,7 @@ def nibble(phrase):
     if nib in TRANSLITERATION_TABLE:
       #print 'trans: ' + TRANSLITERATION_TABLE[nib][1]
       return (TRANSLITERATION_TABLE[nib], phrase[i:])
-  print 'match not found. returning phrase ' + phrase[:1] + ' ' + phrase[1:]
+  #print 'match not found. returning phrase ' + phrase[:1] + ' ' + phrase[1:]
   return ([phrase[:1], phrase[:1]], phrase[1:])
   
 
