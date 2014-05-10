@@ -80,11 +80,15 @@ def main():
     hiragana = romaji2hiragana(word)
     results = lookup(hiragana, dictionary)
     if not results:
-      print('No results found...')
-      possible_hits = guess_stem(hiragana)
-      if possible_hits:
-        print('Perhaps you meant one of the following:')
-        print(', '.join(possible_hits))
+      print(u'No initial results found for query {q}'.format(q=hiragana))
+      alternatives = guess_stem(hiragana)
+      if alternatives:
+        for alternative in alternatives:
+          alternate_results = lookup(alternative, dictionary)
+          if alternate_results:
+            print(u'Perhaps you meant {r}?'.format(r=alternative))
+      else:
+        print(u'No results or possible results found for query {q}'.format(q=hiragana))
     else:
       for result in results:
         format_entry(result)
