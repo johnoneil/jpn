@@ -15,6 +15,7 @@ import argparse
 import re
 
 from transliterate import romaji2hiragana
+from jpn.exceptions import NonUnicodeInputException
 
 
 class VerbalTransform:
@@ -100,11 +101,15 @@ AdjectivalTransforms = [
 def guess_stem(word):
   """given single input word, try to discern japanese word stem
   """
+  #ensure input is a unicode string
+  if not isinstance(word, unicode):
+    raise NonUnicodeInputException('Input argument {word} is not unicode.'.format(word=word))
+
   #1. input word should have no spaces
   word = word.strip().lower()
 
   #2b Convert filtered word to hiragana via romkan
-  hiragana = romaji2hiragana(word.decode('utf-8'))
+  hiragana = romaji2hiragana(word)
   results = [hiragana]
 
   #3: We've got a simple single word in hiragana. First test against adjectival endings
@@ -138,9 +143,11 @@ def main():
   args = parser.parse_args()
 
   for word in args.words:
+    #best practice: decode early, encode late...
+    word = word.decode('utf-8')
     results = guess_stem(word)
     for result in results:
-      print result
+      print result.encode('utf-8')
         
 
 if __name__ == "__main__":

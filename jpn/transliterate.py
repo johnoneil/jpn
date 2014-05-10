@@ -14,6 +14,9 @@ Writing this module because of current defficiencies in the romkan and jTranslit
 import os
 import argparse
 import re
+
+from jpn.exceptions import NonUnicodeInputException
+
 #based on http://en.wikipedia.org/wiki/Kunrei-shiki_romanization
 TRANSLITERATION_TABLE = {
 u'a' :[u'あ',u'ア'], u'i':[u'い', u'イ'],u'u':[u'う',u'ウ'], u'e':[u'え',u'エ'], u'o':[u'お',u'オ'],
@@ -126,7 +129,9 @@ def romaji2hiragana(phrase):
   '''Transliterate using kunrei-shiki
   '''
   #ensure input is a unicode string
-  phrase = phrase.decode('utf-8')
+  if not isinstance(phrase, unicode):
+    raise NonUnicodeInputException('Input argument {phrase} is not unicode.'.format(phrase=phrase))
+
   hiragana = u''
   while phrase:
     (h,p) = nibble(phrase)
@@ -138,8 +143,10 @@ def romaji2hiragana(phrase):
 def romaji2katakana(phrase):
   '''Transliterate using kunrei-shiki
   '''
-  #ensure input is a unicode string
-  phrase = phrase.decode('utf-8')
+    #ensure input is a unicode string
+  if not isinstance(phrase, unicode):
+    raise NonUnicodeInputException('Input argument {phrase} is not unicode.'.format(phrase=phrase))
+
   katakana = u''
   while phrase:
     (h,p) = nibble(phrase)
@@ -154,11 +161,8 @@ def nibble(phrase):
   #longest possible key->kana is 4 characters, so search next four then three etc for key hit
   for i in reversed(range(4)):
     nib = phrase[:i]
-    #print 'nib: '+ nib
     if nib in TRANSLITERATION_TABLE:
-      #print 'trans: ' + TRANSLITERATION_TABLE[nib][1]
       return (TRANSLITERATION_TABLE[nib], phrase[i:])
-  #print 'match not found. returning phrase ' + phrase[:1] + ' ' + phrase[1:]
   return ([phrase[:1], phrase[:1]], phrase[1:])
   
 
@@ -170,10 +174,12 @@ def main():
   args = parser.parse_args()
 
   for word in args.words:
+    #best practice: decode early, encode late. Just handle unicode in libs.
+    word = word.decode('utf-8')
     if args.katakana:
-      print(romaji2katakana(word))
+      print(romaji2katakana(word).encode('utf-8'))
     else:
-      print(romaji2hiragana(word))
+      print(romaji2hiragana(word).encode('utf-8'))
         
 
 if __name__ == "__main__":

@@ -38,13 +38,25 @@ import re
 from transliterate import romaji2hiragana
 from deinflect import guess_stem
 from lxml import etree
+from jpn.exceptions import NonUnicodeInputException
 
 def lookup(word, dictionary):
   '''Look up given word in Edict.
   '''
-  #find entry with r_ele.reb that has contents equal to word
-  e = dictionary.xpath(u'.//reb[text()="{word}"]'.format(word=word))
-  return e
+  #ensure input is a unicode string
+  if not isinstance(word, unicode):
+    raise NonUnicodeInputException('Input argument {word} is not unicode.'.format(word=word))
+
+  results = []
+  hiragana_hits = dictionary.xpath(u'//reb[starts-with(text(),"{word}")]'.format(word=word))
+  if hiragana_hits:
+    results.extend(hiragana_hits)
+
+  kanji_hits = dictionary.xpath(u'//keb[starts-with(text(),"{word}")]'.format(word=word))
+  if kanji_hits:
+    results.extend(kanji_hits)
+
+  return results
 
 
 def main():
@@ -59,10 +71,16 @@ def main():
   print('Edict loaded...')
 
   for word in args.words:
+    #best practice: to decode early, encode late
+    word = word.decode('utf-8')
     hiragana = romaji2hiragana(word)
     results = lookup(hiragana, dictionary)
     if not results:
       print('No results found...')
+      possible_hits = guess_stem(hiragana)
+      if possible_hits:
+        print('Perhaps you meant one of the following:')
+        print(','.join(possible_hits))
     else:
       for result in results:
         print(etree.tostring(result.getparent().getparent(), pretty_print=True, encoding="UTF-8"))
