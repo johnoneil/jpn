@@ -117,6 +117,7 @@ u'z':[u'ず',u'ズ'],
 #simple punctuation handling?
 u'a\'' :[u'ああ',u'アー'], u'i\'':[u'いい', u'イー'],u'u\'':[u'うう',u'ウー'], u'e\'':[u'ええ',u'エー'], u'o\'':[u'おお',u'オー'],
 u'\'' :[u'',u''],
+u'_' :[u'･',u'･'],
 
 #TODO: match dipthongs? Better estimates for American english pronunciation?
 #attempt to render 'th' better, without screwing up 'h'
