@@ -50,13 +50,20 @@ def lookup(word, dictionary):
   results = []
   hiragana_hits = dictionary.xpath(u'//reb[starts-with(text(),"{word}")]'.format(word=word))
   if hiragana_hits:
+    hiragana_hits = [x.getparent().getparent() for x in hiragana_hits]
     results.extend(hiragana_hits)
 
   kanji_hits = dictionary.xpath(u'//keb[starts-with(text(),"{word}")]'.format(word=word))
   if kanji_hits:
+    kanji_hits = [x.getparent().getparent() for x in kanji_hits]
     results.extend(kanji_hits)
 
   return results
+
+def format_entry(entry):
+  '''Format an etree object (containing edict data) for printing
+  '''
+  print(etree.tostring(entry, pretty_print=True, encoding="UTF-8"))
 
 
 def main():
@@ -77,10 +84,10 @@ def main():
       possible_hits = guess_stem(hiragana)
       if possible_hits:
         print('Perhaps you meant one of the following:')
-        print(','.join(possible_hits))
+        print(', '.join(possible_hits))
     else:
       for result in results:
-        print(etree.tostring(result.getparent().getparent(), pretty_print=True, encoding="UTF-8"))
+        format_entry(result)
         
 
 if __name__ == "__main__":
