@@ -64,11 +64,8 @@ def main():
   parser.add_argument('words', nargs='*', help='Words to attempt stemming on')
   args = parser.parse_args()
 
-  print('Loading edict...')
-
-  dictionary = etree.parse('JMdict_e.gz')
-
-  print('Edict loaded...')
+  edict_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'JMdict_e.gz')
+  dictionary = etree.parse(edict_path)
 
   for word in args.words:
     #best practice: to decode early, encode late

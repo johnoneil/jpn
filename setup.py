@@ -28,10 +28,15 @@ setup(name='jpn',
   install_requires=[
     'argparse',
   ],
+  package_data = {
+    '': ['*.gz',],
+    'weeabot' : ['*',],
+  },
   entry_points = {
     'console_scripts': [
       'jpn-transliterate=jpn.transliterate:main',
 			'jpn-deinflect=jpn.deinflect:main',
+      'jpn-edict=jpn.edict:main',
     ],
   },
   zip_safe=True)
