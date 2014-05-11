@@ -41,3 +41,17 @@ Transliteration from Hiragana/Katakana to romaji is not currenty supported.
 
 ### deinflect
 Estimate possible deinflected versions of input japanese word to aid in dictionary lookups.
+This is a basic module that through the method "guess_stem' returns a list of unicode deinflection estimates for a given unicode input string. For example if we have the romaji string u'dekimasu' or the hiragana string u'できます' we'd like to be able to guess its root u'できる'. We can do this as show below.
+```
+>>> from jpn.deinflect import guess_stem
+>>> guess_stem(u'できます')
+(u'\u3067\u304d\u307e\u3059', u'\u3067\u304f', u'\u3067\u304d\u308b', u'\u3067\u304f\u308b')
+>>> for stem in guess_stem(u'できます'):print(stem.encode('utf-8'));
+... 
+できます
+でく
+できる
+でくる
+```
+Note (again) in the example above input and output *are always unicode.* Decode from and encode to your encoding of choice before using the exported method.
+Also note that the module here provided several guesses as to possible roots. Some could be nonsense. Only a subsequent dictionary lookup will reveal which estimates are actual words and which arent.
