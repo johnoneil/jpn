@@ -4,12 +4,12 @@ from setuptools import setup
 #version 0.1: Initial version
 
 def readme():
-    with open('README.md') as f:
-        return f.read()
+  with open('README.md') as f:
+    return f.read()
 
 def requirements():
   with open('requirements.txt') as f:
-    return = f.read().splitlines()
+    return f.read().splitlines()
 
 setup(name='jpn',
   version='0.1',
