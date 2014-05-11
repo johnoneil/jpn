@@ -1,5 +1,4 @@
 argparse==1.2.1
-jpn==0.1
 lxml==3.3.5
 simplestats==0.2.0
 wsgiref==0.1.2
