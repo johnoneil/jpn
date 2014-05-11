@@ -7,6 +7,10 @@ def readme():
     with open('README.md') as f:
         return f.read()
 
+def requirements():
+  with open('requirements.txt') as f:
+    return = f.read()
+
 setup(name='jpn',
   version='0.1',
   description='Japanese support tools.',
@@ -25,9 +29,7 @@ setup(name='jpn',
   packages=[
     'jpn',
   ],
-  install_requires=[
-    'argparse',
-  ],
+  install_requires = requirements(),
   package_data = {
     '': ['*.gz',],
     'weeabot' : ['*',],
