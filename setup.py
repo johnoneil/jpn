@@ -9,7 +9,7 @@ def readme():
 
 def requirements():
   with open('requirements.txt') as f:
-    return = f.read()
+    return = f.read().splitlines()
 
 setup(name='jpn',
   version='0.1',
@@ -32,7 +32,6 @@ setup(name='jpn',
   install_requires = requirements(),
   package_data = {
     '': ['*.gz',],
-    'weeabot' : ['*',],
   },
   entry_points = {
     'console_scripts': [
