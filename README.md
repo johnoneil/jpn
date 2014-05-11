@@ -6,6 +6,11 @@ Those problems were:
 * Improper handling of unicode/utf-8
 * Inability to deinflect verbs for dictionary lookups
 
+That said, the library currently does the following
+* Transliterates romaji (roman letter) strings into either Hiragana or Katakana. The basic mapping of characters is Kunrei-Shiki, but with some modificaitons to ensure robustness.
+* Deinflect a given hiragana (unicode) string to guess at root words. This functionality is still very primitive, but it can provide estimates of both verb and adjective roots for simple cases like the polite, past, negative etc.
+* Look up strings in the standard Edict japanese dictionary. This currently uses lxml for speed, but is still not ideal in its performance for anything other than command line use.
+
 ##Installation
 Installation is currently only through git.
 As usual it is suggested installing into a virtualev.
