@@ -38,6 +38,28 @@ Also note that the transliteration to katakana above isn't perfect. For example 
 
 Transliteration from Hiragana/Katakana to romaji is not currenty supported.
 
+####jpn-transliterate
+The package makes available a command line utility wrapper to carry out transliteration, 'jpn-transliterate'. Use is as below:
+```
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate -h
+usage: jpn-transliterate [-h] [-k] [words [words ...]]
+
+Transliterate romaji to hiragana.
+
+positional arguments:
+  words           Words to transliterate
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -k, --katakana  Transliterate to katakana
+
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate -k testo
+テスト
+
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate dokiniikimasuka?
+どきにいきますか?
+```
+
 
 ### deinflect
 Estimate possible deinflected versions of input japanese word to aid in dictionary lookups.
@@ -55,3 +77,29 @@ This is a basic module that through the method "guess_stem' returns a list of un
 ```
 Note (again) in the example above input and output *are always unicode.* Decode from and encode to your encoding of choice before using the exported method.
 Also note that the module here provided several guesses as to possible roots. Some could be nonsense. Only a subsequent dictionary lookup will reveal which estimates are actual words and which arent.
+
+#### jpn-deinflect
+A command line wrapper is also included for this method. Simple invocation is as follows:
+```
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-deinflect -h
+usage: jpn-deinflect [-h] [words [words ...]]
+
+Guess as uninflected stem of input japanese words (verbs or adjectives).
+
+positional arguments:
+  words       Words to attempt stemming on
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-deinflect kirimasu
+きります
+きる
+きりる
+
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-deinflect akakunai
+あかくない
+あかい
+あかくる
+
+```
