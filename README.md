@@ -30,11 +30,11 @@ This can be done by importing the module and using its romaji2katakana or romaji
 >>> romaji2katakana(u'test')
 u'\u30c6\u30b9\u30c4'
 >>> print(romaji2katakana(u'test').encode('utf-8'))
-テスツ
+テスト
 ```
 Note the following in the above. Input and output to the module methods *must be unicode*, so decode all strings before passing them as inputs.
 Similarly, output is also unicode. Encode output to your encoding of choice to use (print) the output.
-Also note that the transliteration to katakana above isn't perfect. For example i'd prefer 'test' to be transliterated to 'テスト' or something similar, but it does not do that currently. My initial goal is to transliterate simple romaji strings into hiragana for lookups rather than correctly render english words in Katakana.
+Also note that the transliteration to katakana above isn't always perfect. My initial goal is to transliterate simple romaji strings into hiragana for lookups rather than correctly render english words in Katakana.
 
 Transliteration from Hiragana/Katakana to romaji is not currenty supported.
 
@@ -53,7 +53,7 @@ optional arguments:
   -h, --help      show this help message and exit
   -k, --katakana  Transliterate to katakana
 
-(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate -k testo
+(jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate -k test
 テスト
 
 (jpn)joneil@joneilDesktop ~/code/jpn $ jpn-transliterate dokiniikimasuka?
